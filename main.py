@@ -3,6 +3,7 @@ import json
 import os
 import queue
 import threading
+import time
 
 import socketio
 
@@ -19,10 +20,22 @@ sub_queue = queue.Queue(3000)
 sio = socketio.Client()
 socketio_host = os.getenv("SOCKETIO_SERVER", "localhost")
 socketio_port = os.getenv("SOCKETIO_PORT", "5000")
-sio.connect(f'http://{socketio_host}:{socketio_port}')
+socketio_url = f"http://{socketio_host}:{socketio_port}"
+# sio.connect(f'http://{socketio_host}:{socketio_port}')
 dds_publisher = DDSPublisher()
 
 
+def connect_to_socketio(retry_interval=5):
+    """Try to connect to Socket.IO server, retrying if it’s down."""
+    while True:
+        try:
+            print(f"Connecting to {socketio_url} ...")
+            sio.connect(socketio_url)
+            print("✅ Connected to Socket.IO server")
+            break
+        except socketio.exceptions.ConnectionError:
+            print(f"⚠️ Server not available, retrying in {retry_interval} seconds...")
+            time.sleep(retry_interval)
 def get_detection():
     while True:
         detection = sub_queue.get()
@@ -56,6 +69,7 @@ def disconnect():
 
 
 if __name__ == '__main__':
+    connect_to_socketio()
     dds_subscriber = DDSListener(sub_queue)
     dds_subscriber.start_listening()
     threading.Thread(target=get_detection, daemon=True).start()
