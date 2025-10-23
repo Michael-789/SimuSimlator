@@ -1,0 +1,51 @@
+# =======================
+# Python
+# =======================
+__pycache__/
+
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+
+
+# virtualenv
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# =======================
+# JetBrains / PyCharm
+# =======================
+.idea/
+# Uncomment if you use PyCharm’s local history (not recommended for git)
+# .idea/**/workspace.xml
+# .idea/**/tasks.xml
+# .idea/**/dictionaries
+# .idea/**/shelf/
+
